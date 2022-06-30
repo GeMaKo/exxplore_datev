@@ -1,4 +1,4 @@
-form sklearn.linear_model import RidgeClassifier
+from sklearn.linear_model import RidgeClassifier
 import numpy as np
 
 # Ridge_Classifier
