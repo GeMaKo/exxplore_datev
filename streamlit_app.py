@@ -1,7 +1,7 @@
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import streamlit as st
-from plot import create_dataset_figure
+from plot import create_dataset_figure, create_decision_plot
 from sklearn.inspection import DecisionBoundaryDisplay
 from sklearn.linear_model import LogisticRegression
 
@@ -59,7 +59,8 @@ with st.container():
 
 
 
-
 with right:
     for model_name, model_dict in models.items():
         fitted_model = model_dict["fitted_estimator"]
+        fig = create_decision_plot(fitted_model, X_train, X_test, y_train, y_test)
+        st.pyplot(fig)
