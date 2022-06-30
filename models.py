@@ -1,5 +1,6 @@
 from sklearn.linear_model import RidgeClassifier
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 import numpy as np
 
 
@@ -44,9 +45,33 @@ decision_tree_classification_definition = {
     }
 }
 
+random_forest_classification_definition = {
+    "estimator": RandomForestClassifier,
+    "parameters": {
+        "max_depth": {
+            "type": "slider",
+            "values": np.arange(1, 5),
+        },
+        "min_samples_split": {
+            "type": "slider",
+            "values": np.arange(2, 5),
+        },
+        "min_samples_leaf": {
+            "type": "slider",
+            "values": np.arange(1, 5),
+        },
+        "bootstrap": {
+            "type": "checkbox",
+            "values": [True, False],
+        },
+    }  
+
+}
+
 models = {
-    "ridge_classification": ridge_classification_defintion,
-    "decision_tree_classification": decision_tree_classification_definition,
+    "Ridge Classifier": ridge_classification_defintion,
+    "Decision Tree Classifier": decision_tree_classification_definition,
+    "Random Forest Classifier": random_forest_classification_definition,
 }
 
 

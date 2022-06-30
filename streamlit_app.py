@@ -39,7 +39,7 @@ for model_name, model_dict in models.items():
     with st.container():
         st.write(model_name)
         paramter_values = {}
-        left, right = st.columns([60,40])
+        left, right = st.columns([50,50])
         with left:
             for parameter_name, properties in model_dict['parameters'].items():
                 if properties["type"] == "slider":
