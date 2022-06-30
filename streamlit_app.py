@@ -32,13 +32,14 @@ with st.sidebar:
     st.pyplot(data_fig, clear_figure=True)
 
 
-with st.container():
-    left, right = st.columns([60,40])
-    with left:
-        st.subheader("Classifier")
-        paramter_values = {}
-        for model_name in models:
-            st.write(model_name)
+
+st.subheader("Classifier")
+paramter_values = {}
+for model_name in models:
+    with st.container():
+        st.write(model_name)
+        left, right = st.columns([60,40])
+        with left:
             for parameter_name, properties in models[model_name]['parameters'].items():
                 if properties["type"] == "slider":
                     paramter_values[parameter_name] = st.select_slider(
@@ -60,6 +61,7 @@ with st.container():
 
 
 
-with right:
-    for model_name, model_dict in models.items():
-        fitted_model = model_dict["fitted_estimator"]
+        with right:
+            for model_name, model_dict in models.items():
+                fitted_model = models[model_name]["fitted_estimator"]
+            st.write(f"score is: {score}")

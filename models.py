@@ -25,24 +25,28 @@ ridge_classification_defintion =  {
 decision_tree_classification_definition = {
     "estimator": DecisionTreeClassifier,
     "parameters": {    
-        "alpha": {
-            "type": "slider",
-            "values": np.logspace(-5, 0, num=6),
-        },
-        "fit_intercept": {
-            "type": "checkbox",
-            "values": [True, False],
-        },
-        "solver": {
+        "criterion": {
             "type": "selection",
-            "values": ["svd", "cholesky", "lsqr", "sparse_cg", "sag", "saga", "lbfgs"],
-        }  
+            "values": ["gini", "entropy", "log_loss"],
+        },
+        "max_depth": {
+            "type": "slider",
+            "values": np.arange(1, 5),
+        },
+        "min_samples_split": {
+            "type": "slider",
+            "values": np.arange(1, 5),
+        },
+        "min_samples_leaf": {
+            "type": "slider",
+            "values": np.arange(1, 5),
+        }   
     }
 }
 
 models = {
     "ridge_classification": ridge_classification_defintion,
-    #"decision_tree_classification": decision_tree_classification_definition,
+    "decision_tree_classification": decision_tree_classification_definition,
 }
 
 
