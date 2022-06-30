@@ -37,9 +37,17 @@ DATASETS = {
     "Circle dataset": get_circle_data,
 }
 
-def create_figure(X, y, ax):
-    ax.plot(X[y==0,0], X[y==0,1], marker="o", markersize=10, linestyle="None")
-    ax.plot(X[y==1,0], X[y==1,1], marker="o", markersize=10, linestyle="None")
+
+def create_figure(X_train, X_test, y_train, y_test, ax):
+    lines = ax.plot(X_train[y_train==0, 0], X_train[y_train==0, 1], marker="o", markersize=10, linestyle="None", label="train")
+    first_color = lines[0].get_color()
+    lines = ax.plot(X_train[y_train==1, 0], X_train[y_train==1, 1], marker="o", markersize=10, linestyle="None")
+    second_color = lines[0].get_color()
+    
+    ax.plot(X_test[y_test==0, 0], X_test[y_test==0, 1], color=first_color, marker="x", markersize=15, linestyle="None", label="test")
+    ax.plot(X_test[y_test==1, 0], X_test[y_test==1, 1], color=second_color, marker="x", markersize=15, linewidth=2, linestyle="None")
+    
+    
 
 
 
