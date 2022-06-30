@@ -7,8 +7,7 @@ from sklearn.model_selection import train_test_split
 
 from data import (DATASETS, create_figure, get_circle_data, get_isolated_data,
                   get_moon_data, get_xor_data)
-from models import ridge_classifier_parameters, ridge_classifier
-
+from models import model_dict
 
 mpl.style.use("default")
 
@@ -19,7 +18,7 @@ st.title("Exxplore - Machine Learning Visualized")
 left, center, right = st.columns([25,50,25])
 
 with left:
-    st.write("Choose your dataset")
+    st.subheader("Choose your dataset")
     
     data_noise = st.slider("Select noise", min_value=0.0, max_value=1.0, step=0.05, value=0.3)
     data_ratio = st.slider("Select train/test ratio", min_value=0.0, max_value=1.0, step=0.05, value=0.8)
@@ -40,22 +39,24 @@ with left:
 
 
 with center:
+    st.subheader("Classifier")
     paramter_values = {}
-    for parameter, values in ridge_classifier_parameters['slider'].items():
-        paramter_values[parameter] = st.select_slider(
-            parameter,
-            options=values)
-    for parameter, values in ridge_classifier_parameters['checkbox'].items():
-        paramter_values[parameter] = st.checkbox(
-            parameter)
-    for parameter, values in ridge_classifier_parameters['selection'].items():
-        paramter_values[parameter] = st.selectbox(
-            parameter,
-            options=values)
-    estimator = ridge_classifier(**paramter_values)
-    clf = estimator.fit(X, y)
-    score = clf.score(X, y)
-    st.write(f"score is: {score}")
+    for model_name in model_dict:
+        st.write(model_name)
+        for parameter, values in model_dict[model_name]['parameters']['slider'].items():
+            paramter_values[parameter] = st.select_slider(
+                parameter,
+                options=values)
+        for parameter, values in model_dict[model_name]['parameters']['checkbox'].items():
+            paramter_values[parameter] = st.checkbox(
+                parameter)
+        for parameter, values in model_dict[model_name]['parameters']['selection'].items():
+            paramter_values[parameter] = st.selectbox(
+                parameter,
+                options=values)
+        model_dict[model_name]["fitted_estimator"] = model_dict[model_name]["estimator"](**paramter_values).fit(X_train, y_train)
+        score = model_dict[model_name]["fitted_estimator"].score(X_test, y_test)
+        st.write(f"score is: {score}")
     
 
 with right:
