@@ -14,9 +14,9 @@ mpl.style.use("default")
 st.set_page_config(layout="wide")
 st.title("Exxplore - Machine Learning Visualized")
 
-left, right = st.columns([25,75])
+#left, right = st.columns([25,75])
 
-with left:
+with st.sidebar:
     st.subheader("Choose your dataset")
     
     data_noise = st.slider("Select noise", min_value=0.05, max_value=1.0, step=0.05, value=0.3)
@@ -34,28 +34,32 @@ with left:
     st.pyplot(data_fig, clear_figure=True)
 
 
-with right:
-    st.subheader("Classifier")
-    paramter_values = {}
-    for model_name in model_dict:
-        st.write(model_name)
-        for parameter_name, properties in model_dict[model_name]['parameters'].items():
-            if properties["type"] == "slider":
-                paramter_values[parameter_name] = st.select_slider(
-                    parameter_name,
-                    options=properties["values"])
-            elif properties["type"] == "checkbox":
-                paramter_values[parameter_name] = st.checkbox(
-                    parameter_name)
-            elif properties["type"] == "selection":
-                paramter_values[parameter_name] = st.selectbox(
-                    parameter_name,
-                    options=properties["values"])
-            else:
-                pass
-        model_dict[model_name]["fitted_estimator"] = model_dict[model_name]["estimator"](**paramter_values).fit(X_train, y_train)
-        score = model_dict[model_name]["fitted_estimator"].score(X_test, y_test)
-        st.write(f"score is: {score}")
+with st.container():
+    left, right = st.columns([60,40])
+    with left:
+        st.subheader("Classifier")
+        paramter_values = {}
+        for model_name in model_dict:
+            st.write(model_name)
+            for parameter_name, properties in model_dict[model_name]['parameters'].items():
+                if properties["type"] == "slider":
+                    paramter_values[parameter_name] = st.select_slider(
+                        parameter_name,
+                        options=properties["values"])
+                elif properties["type"] == "checkbox":
+                    paramter_values[parameter_name] = st.checkbox(
+                        parameter_name)
+                elif properties["type"] == "selection":
+                    paramter_values[parameter_name] = st.selectbox(
+                        parameter_name,
+                        options=properties["values"])
+                else:
+                    pass
+            model_dict[model_name]["fitted_estimator"] = model_dict[model_name]["estimator"](**paramter_values).fit(X_train, y_train)
+            score = model_dict[model_name]["fitted_estimator"].score(X_test, y_test)
+            st.write(f"score is: {score}")
+
+
 
 
     
