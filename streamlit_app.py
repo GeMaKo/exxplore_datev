@@ -1,7 +1,11 @@
-import streamlit as st
+import matplotlib as mpl
 import matplotlib.pyplot as plt
+import streamlit as st
 
-from data import create_figure, get_circle_data, get_isolated_data, get_moon_data, get_xor_data, DATASETS
+from data import (DATASETS, create_figure, get_circle_data, get_isolated_data,
+                  get_moon_data, get_xor_data)
+
+mpl.style.use("default")
 
 st.title("Exxplore - Machine Learning Visualized")
 
@@ -17,7 +21,11 @@ with left:
     
     X, y = data_func(data_noise)
     create_figure(X, y, ax)
-    st.pyplot(fig)
+    plt.axis('tight')
+    plt.xticks([])
+    plt.yticks([])
+    plt.grid(visible=True, axis="both")
+    st.pyplot(fig, clear_figure=True)
 
     
     
