@@ -39,7 +39,8 @@ decision_tree_classification_definition = {
         }  
     }
 }
-model_dict = {
+
+models = {
     "ridge_classification": ridge_classification_defintion,
     #"decision_tree_classification": decision_tree_classification_definition,
 }

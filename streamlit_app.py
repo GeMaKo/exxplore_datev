@@ -6,7 +6,7 @@ from sklearn.inspection import DecisionBoundaryDisplay
 from sklearn.linear_model import LogisticRegression
 
 from data import DATASETS, get_train_test_data
-from models import model_dict
+from models import models
 
 mpl.style.use("default")
 
@@ -39,9 +39,9 @@ with st.container():
     with left:
         st.subheader("Classifier")
         paramter_values = {}
-        for model_name in model_dict:
+        for model_name in models:
             st.write(model_name)
-            for parameter_name, properties in model_dict[model_name]['parameters'].items():
+            for parameter_name, properties in models[model_name]['parameters'].items():
                 if properties["type"] == "slider":
                     paramter_values[parameter_name] = st.select_slider(
                         parameter_name,
@@ -55,21 +55,13 @@ with st.container():
                         options=properties["values"])
                 else:
                     pass
-            model_dict[model_name]["fitted_estimator"] = model_dict[model_name]["estimator"](**paramter_values).fit(X_train, y_train)
-            score = model_dict[model_name]["fitted_estimator"].score(X_test, y_test)
+            models[model_name]["fitted_estimator"] = models[model_name]["estimator"](**paramter_values).fit(X_train, y_train)
+            score = models[model_name]["fitted_estimator"].score(X_test, y_test)
             st.write(f"score is: {score}")
 
 
 
 
-    
-    
-    
-    
-    
-    
-    
-
-    
-    
-    
+with right:
+    for model_name, model_dict in models.items():
+        fitted_model = model_dict["fitted_estimator"]
