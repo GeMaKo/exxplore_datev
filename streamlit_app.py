@@ -6,6 +6,8 @@ from sklearn.linear_model import LogisticRegression
 
 from data import (DATASETS, create_figure, get_circle_data, get_isolated_data,
                   get_moon_data, get_xor_data)
+from models import ridge_classifier_parameters, ridge_classifier
+
 
 mpl.style.use("default")
 
@@ -31,7 +33,22 @@ with left:
 
 
 with center:
-    ...
+    paramter_values = {}
+    for parameter, values in ridge_classifier_parameters['slider'].items():
+        paramter_values[parameter] = st.select_slider(
+            parameter,
+            options=values)
+    for parameter, values in ridge_classifier_parameters['checkbox'].items():
+        paramter_values[parameter] = st.checkbox(
+            parameter)
+    for parameter, values in ridge_classifier_parameters['selection'].items():
+        paramter_values[parameter] = st.selectbox(
+            parameter,
+            options=values)
+    estimator = ridge_classifier(**paramter_values)
+    clf = estimator.fit(X, y)
+    score = clf.score(X, y)
+    st.write(f"score is: {score}")
     
 
 with right:
