@@ -39,17 +39,20 @@ with right:
     paramter_values = {}
     for model_name in model_dict:
         st.write(model_name)
-        for parameter, values in model_dict[model_name]['parameters']['slider'].items():
-            paramter_values[parameter] = st.select_slider(
-                parameter,
-                options=values)
-        for parameter, values in model_dict[model_name]['parameters']['checkbox'].items():
-            paramter_values[parameter] = st.checkbox(
-                parameter)
-        for parameter, values in model_dict[model_name]['parameters']['selection'].items():
-            paramter_values[parameter] = st.selectbox(
-                parameter,
-                options=values)
+        for parameter_name, properties in model_dict[model_name]['parameters'].items():
+            if properties["type"] == "slider":
+                paramter_values[parameter_name] = st.select_slider(
+                    parameter_name,
+                    options=properties["values"])
+            elif properties["type"] == "checkbox":
+                paramter_values[parameter_name] = st.checkbox(
+                    parameter_name)
+            elif properties["type"] == "selection":
+                paramter_values[parameter_name] = st.selectbox(
+                    parameter_name,
+                    options=properties["values"])
+            else:
+                pass
         model_dict[model_name]["fitted_estimator"] = model_dict[model_name]["estimator"](**paramter_values).fit(X_train, y_train)
         score = model_dict[model_name]["fitted_estimator"].score(X_test, y_test)
         st.write(f"score is: {score}")
