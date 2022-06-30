@@ -14,8 +14,6 @@ mpl.style.use("default")
 st.set_page_config(layout="wide")
 st.title("Exxplore - Machine Learning Visualized")
 
-#left, right = st.columns([25,75])
-
 with st.sidebar:
     st.subheader("Choose your dataset")
     

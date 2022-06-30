@@ -17,7 +17,7 @@ ridge_classification_defintion =  {
         },
         "solver": {
             "type": "selection",
-            "values": ["auto", "svd", "cholesky", "lsqr", "sparse_cg", "sag", "saga", "lbfgs"],
+            "values": ["svd", "cholesky", "lsqr", "sparse_cg", "sag", "saga", "lbfgs"],
         }  
     }
 }
@@ -35,7 +35,7 @@ decision_tree_classification_definition = {
         },
         "solver": {
             "type": "selection",
-            "values": ["auto", "svd", "cholesky", "lsqr", "sparse_cg", "sag", "saga", "lbfgs"],
+            "values": ["svd", "cholesky", "lsqr", "sparse_cg", "sag", "saga", "lbfgs"],
         }  
     }
 }
