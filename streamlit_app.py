@@ -1,7 +1,7 @@
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import streamlit as st
-from plot import create_dataset_figure
+from plot import create_dataset_figure, create_decision_plot
 from sklearn.inspection import DecisionBoundaryDisplay
 from sklearn.linear_model import LogisticRegression
 
@@ -34,13 +34,14 @@ with st.sidebar:
 
 
 st.subheader("Classifier")
-paramter_values = {}
-for model_name in models:
+
+for model_name, model_dict in models.items():
     with st.container():
         st.write(model_name)
+        paramter_values = {}
         left, right = st.columns([60,40])
         with left:
-            for parameter_name, properties in models[model_name]['parameters'].items():
+            for parameter_name, properties in model_dict['parameters'].items():
                 if properties["type"] == "slider":
                     paramter_values[parameter_name] = st.select_slider(
                         parameter_name,
@@ -60,8 +61,8 @@ for model_name in models:
 
 
 
-
         with right:
-            for model_name, model_dict in models.items():
-                fitted_model = models[model_name]["fitted_estimator"]
-            st.write(f"score is: {score}")
+            fitted_model = model_dict["fitted_estimator"]
+            fig = create_decision_plot(fitted_model, X_train, X_test, y_train, y_test)
+            st.pyplot(fig)
+        st.markdown("---")

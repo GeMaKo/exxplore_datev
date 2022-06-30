@@ -15,27 +15,27 @@ ridge_classification_defintion =  {
             "type": "checkbox",
             "values": [True, False],
         },
-        "solver": {
-            "type": "selection",
-            "values": ["svd", "cholesky", "lsqr", "sparse_cg", "sag", "saga", "lbfgs"],
-        }  
+        #"solver": {
+        #    "type": "selection",
+        #    "values": ["svd", "cholesky", "lsqr", "sparse_cg", "sag", "saga", "lbfgs"],
+        #}  
     }
 }
 
 decision_tree_classification_definition = {
     "estimator": DecisionTreeClassifier,
     "parameters": {    
-        "criterion": {
-            "type": "selection",
-            "values": ["gini", "entropy", "log_loss"],
-        },
+        #"criterion": {
+        #    "type": "selection",
+        #    "values": ["gini", "entropy", "log_loss"],
+        #},
         "max_depth": {
             "type": "slider",
             "values": np.arange(1, 5),
         },
         "min_samples_split": {
             "type": "slider",
-            "values": np.arange(1, 5),
+            "values": np.arange(2, 5),
         },
         "min_samples_leaf": {
             "type": "slider",
