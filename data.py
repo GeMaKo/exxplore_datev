@@ -6,8 +6,6 @@ from sklearn.datasets import make_blobs, make_moons, make_circles
 
 import streamlit as st
 
-mpl.style.use("default")
-
 
 def get_isolated_data(noise: float):
     X, y = make_blobs(n_samples=100, n_features=2, centers=np.array([[-2, 2], [2, -2]]), cluster_std=np.array([noise*1.5, noise*1.3]))
@@ -40,8 +38,8 @@ DATASETS = {
 }
 
 def create_figure(X, y, ax):
-    ax.plot(X[y==0,0], X[y==0,1], marker="o", linestyle="None")
-    ax.plot(X[y==1,0], X[y==1,1], marker="o", linestyle="None")
+    ax.plot(X[y==0,0], X[y==0,1], marker="o", markersize=10, linestyle="None")
+    ax.plot(X[y==1,0], X[y==1,1], marker="o", markersize=10, linestyle="None")
 
 
 

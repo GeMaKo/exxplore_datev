@@ -1,6 +1,8 @@
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import streamlit as st
+from sklearn.inspection import DecisionBoundaryDisplay
+from sklearn.linear_model import LogisticRegression
 
 from data import (DATASETS, create_figure, get_circle_data, get_isolated_data,
                   get_moon_data, get_xor_data)
@@ -13,7 +15,7 @@ left, center, right = st.columns(3)
 
 with left:
     
-    data_noise = st.slider("noise", min_value=0.0, max_value=1.0, step=0.05)
+    data_noise = st.slider("noise", min_value=0.0, max_value=1.0, step=0.05, value=0.3)
     
     dataset_name = st.selectbox("Select dataset", options=DATASETS.keys())
     data_func = DATASETS[dataset_name]
@@ -26,6 +28,14 @@ with left:
     plt.yticks([])
     plt.grid(visible=True, axis="both")
     st.pyplot(fig, clear_figure=True)
+
+
+with center:
+    ...
+    
+
+with right:
+    ...
 
     
     
