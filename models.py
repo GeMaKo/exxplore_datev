@@ -31,15 +31,15 @@ decision_tree_classification_definition = {
         #    "values": ["gini", "entropy", "log_loss"],
         #},
         "max_depth": {
-            "type": "slider",
+            "type": "select_slider",
             "values": np.arange(1, 5),
         },
         "min_samples_split": {
-            "type": "slider",
+            "type": "select_slider",
             "values": np.arange(2, 5),
         },
         "min_samples_leaf": {
-            "type": "slider",
+            "type": "select_slider",
             "values": np.arange(1, 5),
         }   
     }
@@ -49,15 +49,15 @@ random_forest_classification_definition = {
     "estimator": RandomForestClassifier,
     "parameters": {
         "max_depth": {
-            "type": "slider",
+            "type": "select_slider",
             "values": np.arange(1, 5),
         },
         "min_samples_split": {
-            "type": "slider",
+            "type": "select_slider",
             "values": np.arange(2, 5),
         },
         "min_samples_leaf": {
-            "type": "slider",
+            "type": "select_slider",
             "values": np.arange(1, 5),
         },
         "bootstrap": {

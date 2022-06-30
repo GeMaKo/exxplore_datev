@@ -35,6 +35,7 @@ with st.sidebar:
 
 st.subheader("Classifier")
 
+widget_key = 0
 for model_name, model_dict in models.items():
     with st.container():
         st.write(model_name)
@@ -42,19 +43,23 @@ for model_name, model_dict in models.items():
         left, right = st.columns([50,50])
         with left:
             for parameter_name, properties in model_dict['parameters'].items():
-                if properties["type"] == "slider":
+                if properties["type"] == "select_slider":
                     paramter_values[parameter_name] = st.select_slider(
                         parameter_name,
-                        options=properties["values"])
+                        options=properties["values"],
+                        key=widget_key)
                 elif properties["type"] == "checkbox":
                     paramter_values[parameter_name] = st.checkbox(
-                        parameter_name)
+                        parameter_name,
+                        key=widget_key)
                 elif properties["type"] == "selection":
                     paramter_values[parameter_name] = st.selectbox(
                         parameter_name,
-                        options=properties["values"])
+                        options=properties["values"],
+                        key=widget_key)
                 else:
                     pass
+                widget_key += 1
             models[model_name]["fitted_estimator"] = models[model_name]["estimator"](**paramter_values).fit(X_train, y_train)
             score = models[model_name]["fitted_estimator"].score(X_test, y_test)
             st.write(f"score is: {score}")
