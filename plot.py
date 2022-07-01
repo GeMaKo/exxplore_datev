@@ -31,8 +31,8 @@ def create_dataset_figure(X_train: np.ndarray, X_test: np.ndarray, y_train: np.n
         return ax
 
 @st.cache(suppress_st_warning=True, allow_output_mutation=True)
-def create_decision_plot(estimator: BaseEstimator, X_train: np.ndarray, X_test: np.ndarray, y_train: np.ndarray, y_test: np.ndarray):
-    disp = DecisionBoundaryDisplay.from_estimator(estimator, np.r_[X_train, X_test], alpha=0.5, response_method="auto")
+def create_decision_plot(estimator: BaseEstimator, X_train: np.ndarray, X_test: np.ndarray, y_train: np.ndarray, y_test: np.ndarray, discretize: bool = False):
+    disp = DecisionBoundaryDisplay.from_estimator(estimator, np.r_[X_train, X_test], alpha=0.5, response_method="auto" if not discretize else "predict")
     
     create_dataset_figure(X_train, X_test, y_train, y_test, ax=disp.ax_)
     

@@ -1,8 +1,10 @@
+import sklearn
 from sklearn.linear_model import RidgeClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 import numpy as np
 import streamlit as st
+import time
 
 
 # Ridge_Classifier
@@ -81,7 +83,10 @@ models = {
 
 
 @st.cache(allow_output_mutation=True)
-def fit_estimator(estimator, X_train, y_train):
-    return estimator.fit(X_train, y_train)
+def fit_estimator(estimator, X_train, y_train) -> tuple[sklearn.base.BaseEstimator, float]:
+    start_time = time.perf_counter()
+    estimator.fit(X_train, y_train)
+    end_time = time.perf_counter()
+    return estimator, end_time - start_time
 
 
