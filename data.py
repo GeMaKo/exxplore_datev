@@ -10,14 +10,14 @@ from sklearn.model_selection import train_test_split
 
 @st.cache
 def get_isolated_data(noise: float) -> tuple[np.ndarray, np.ndarray]:
-    X, y = make_blobs(n_samples=100, n_features=2, centers=np.array([[-2, 2], [2, -2]]), cluster_std=np.array([noise*5, noise*1.3]))
+    X, y = make_blobs(n_samples=100, n_features=2, centers=np.array([[-2, 2], [2, -2]]), cluster_std=np.array([noise*5, noise*5]))
     return X, y
 
 @st.cache
 def get_xor_data(noise: float) -> tuple[np.ndarray, np.ndarray]:
-    X1, _ = make_blobs(n_samples=50, n_features=2, centers=np.array([[-2, 2], [2, -2]]), cluster_std=np.array([noise*5, noise*1.3]))
+    X1, _ = make_blobs(n_samples=50, n_features=2, centers=np.array([[-2, 2], [2, -2]]), cluster_std=np.array([noise*5, noise*5]))
     y1 = np.zeros(X1.shape[0])
-    X2, _ = make_blobs(n_samples=50, n_features=2, centers=np.array([[-2, -2], [2, 2]]), cluster_std=np.array([noise*5, noise*1.2]))
+    X2, _ = make_blobs(n_samples=50, n_features=2, centers=np.array([[-2, -2], [2, 2]]), cluster_std=np.array([noise*5, noise*5]))
     y2 = np.ones(X2.shape[0])
     return np.r_[X1, X2], np.r_[y1, y2]
 
