@@ -1,7 +1,9 @@
 import sklearn
 from sklearn.linear_model import RidgeClassifier
+from sklearn.preprocessing import PolynomialFeatures
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
 import numpy as np
 import streamlit as st
 
@@ -71,13 +73,32 @@ random_forest_classification_definition = {
             "values": [True, False],
         },
     }  
-
 }
+
+svm_classification_definition = {
+    "estimator": SVC,
+    "parameters": {
+        "kernel": {
+            "type": "selection",
+            "values": ["linear", "poly", "rbf"],
+        },
+        "degree": {
+            "type": "select_slider",
+            "values": np.arange(1, 7),
+        },
+        "shrinking": {
+            "type": "checkbox",
+            "values": [True, False],
+        },
+    }  
+}
+
 
 models = {
     "Ridge Classifier": ridge_classification_defintion,
     "Decision Tree Classifier": decision_tree_classification_definition,
     "Random Forest Classifier": random_forest_classification_definition,
+    "SVM Classifier": svm_classification_definition,
 }
 
 
