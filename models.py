@@ -9,7 +9,7 @@ ridge_classification_defintion =  {
     "estimator": RidgeClassifier,
     "parameters": {    
         "alpha": {
-            "type": "slider",
+            "type": "select_slider",
             "values": np.logspace(-5, 0, num=6),
         },
         "fit_intercept": {
@@ -48,6 +48,10 @@ decision_tree_classification_definition = {
 random_forest_classification_definition = {
     "estimator": RandomForestClassifier,
     "parameters": {
+        "n_estimators": {
+            "type": "select_slider",
+            "values": np.arange(10, 101, 10),
+        },
         "max_depth": {
             "type": "select_slider",
             "values": np.arange(1, 5),
