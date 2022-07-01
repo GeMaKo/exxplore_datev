@@ -1,7 +1,9 @@
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.base import BaseEstimator
 from sklearn.inspection import DecisionBoundaryDisplay
+import streamlit as st
 
 
 def create_dataset_figure(X_train: np.ndarray, X_test: np.ndarray, y_train: np.ndarray, y_test: np.ndarray, ax = None):
@@ -33,5 +35,8 @@ def create_decision_plot(estimator: BaseEstimator, X_train: np.ndarray, X_test: 
     disp = DecisionBoundaryDisplay.from_estimator(estimator, np.r_[X_train, X_test], alpha=0.5, response_method="auto")
     
     create_dataset_figure(X_train, X_test, y_train, y_test, ax=disp.ax_)
+    
+    norm = mpl.colors.Normalize(vmin=0, vmax=1)
+    disp.figure_.colorbar(mpl.cm.ScalarMappable(norm=norm), ax=disp.ax_)
     
     return disp.figure_
