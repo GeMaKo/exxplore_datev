@@ -3,11 +3,12 @@ import matplotlib.pyplot as plt
 import streamlit as st
 from plot import create_dataset_figure, create_decision_plot
 from sklearn.inspection import DecisionBoundaryDisplay
-from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_validate
 
+import pandas as pd
 from data import DATASETS, get_train_test_data
-from models import models, fit_estimator
+from models import fit_estimator, models
+from plot import create_dataset_figure, create_decision_plot
 
 mpl.style.use("default")
 
@@ -31,8 +32,6 @@ with st.sidebar:
     data_fig = create_dataset_figure(X_train, X_test, y_train, y_test)
     
     st.pyplot(data_fig, clear_figure=True)
-
-
 
 
 st.subheader("Classifier")
@@ -63,24 +62,25 @@ for model_name, model_dict in models.items():
                     pass
                 widget_key += 1
             
+            
             fitted_estimator = fit_estimator(models[model_name]["estimator"](**paramter_values), X_train, y_train)
+            scoring_classification_methods = ["f1", "accuracy"]
+
+            cv_scores = cross_validate(fitted_estimator, X_train, y_train, cv=3,
+                scoring=scoring_classification_methods,
+                return_train_score=True)
+            df_cv_results = pd.DataFrame.from_dict(cv_scores, orient='index')
+            df_cv_results = df_cv_results.rename({0: "CV 1", 1: "CV 2", 2: "CV 3"}, axis='columns')
+            st.dataframe(df_cv_results)
             models[model_name]["fitted_estimator"] = fitted_estimator
             
 
         with right:
-            scoring_classification_methods = ["f1", "accuracy"]
-            fig = create_decision_plot(fitted_estimator, X_train, X_test, y_train, y_test)
+            discretize = st.checkbox("Discretize prediction", key=f"discretize_{widget_key}")
+            fig = create_decision_plot(fitted_estimator, X_train, X_test, y_train, y_test, discretize)
             st.pyplot(fig)
-            cv_scores = cross_validate(fitted_estimator, X_train, y_train, cv=3,
-                scoring=('f1', 'accuracy'),
-                return_train_score=True)
-            for data in ["test_", "train_"]:
-                for scoring in scoring_classification_methods:
-                    entry = data + scoring 
-                    st.write(f"cv_{entry} is: {cv_scores[entry]}")
-            st.write(f"Fit time: {cv_scores['fit_time']}")
             test_score = fitted_estimator.score(X_test, y_test)
             st.write(f"Test scores is: {test_score}")
-            
+            widget_key += 1
             
         st.markdown("---")
