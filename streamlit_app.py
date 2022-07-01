@@ -72,7 +72,7 @@ for model_name, model_dict in models.items():
                 scoring=scoring_classification_methods,
                 return_train_score=True)
             df_cv_results = pd.DataFrame.from_dict(cv_scores)
-            df_cv_results = df_cv_results.rename({0: "CV 1", 1: "CV 2", 2: "CV 3"}, axis='columns')
+            df_cv_results = df_cv_results.rename({0: "CV 1", 1: "CV 2", 2: "CV 3"}, axis='rows')
             st.dataframe(df_cv_results)
             models[model_name]["fitted_estimator"] = fitted_estimator
             
@@ -82,7 +82,7 @@ for model_name, model_dict in models.items():
             fig = create_decision_plot(fitted_estimator, X_train, X_test, y_train, y_test, discretize)
             st.pyplot(fig)
             test_score = fitted_estimator.score(X_test, y_test)
-            st.write(f"Test scores is: {test_score}")
+            st.write(f"Test score is: {test_score}")
             widget_key += 1
             
         st.markdown("---")

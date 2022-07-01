@@ -12,10 +12,10 @@ import streamlit as st
 ridge_classification_defintion =  {
     "estimator": RidgeClassifier,
     "parameters": {    
-        "alpha": {
-            "type": "select_slider",
-            "values": np.logspace(-5, 0, num=6),
-        },
+        #"alpha": {
+        #    "type": "select_slider",
+        #    "values": np.logspace(-5, 0, num=6),
+        #},
         "fit_intercept": {
             "type": "checkbox",
             "values": [True, False],
@@ -80,8 +80,12 @@ svm_classification_definition = {
     "parameters": {
         "kernel": {
             "type": "selection",
-            "values": ["linear", "poly", "rbf"],
+            "values": ["poly", "rbf"],
         },
+        #"C": {
+        #    "type": "select_slider",
+        #    "values": np.logspace(-5, 0, num=6),
+        #},
         "degree": {
             "type": "select_slider",
             "values": np.arange(1, 7),
@@ -96,9 +100,10 @@ svm_classification_definition = {
 
 models = {
     "Ridge Classifier": ridge_classification_defintion,
+    "SVM Classifier": svm_classification_definition,
     "Decision Tree Classifier": decision_tree_classification_definition,
     "Random Forest Classifier": random_forest_classification_definition,
-    "SVM Classifier": svm_classification_definition,
+    
 }
 
 
