@@ -33,7 +33,7 @@ decision_tree_classification_definition = {
         #},
         "max_depth": {
             "type": "select_slider",
-            "values": np.arange(1, 5),
+            "values": np.arange(1, 14),
         },
         "min_samples_split": {
             "type": "select_slider",
@@ -55,7 +55,7 @@ random_forest_classification_definition = {
         },
         "max_depth": {
             "type": "select_slider",
-            "values": np.arange(1, 5),
+            "values": np.arange(1, 11),
         },
         "min_samples_split": {
             "type": "select_slider",
