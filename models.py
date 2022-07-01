@@ -1,12 +1,12 @@
-import sklearn
-from sklearn.linear_model import RidgeClassifier
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.svm import SVC
 import numpy as np
+import sklearn
 import streamlit as st
-
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import RidgeClassifier
+from sklearn.model_selection import cross_validate
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
 
 # Ridge_Classifier
 ridge_classification_defintion =  {
@@ -80,7 +80,7 @@ svm_classification_definition = {
     "parameters": {
         "kernel": {
             "type": "selection",
-            "values": ["poly", "rbf"],
+            "values": ["linear", "poly", "rbf"],
         },
         #"C": {
         #    "type": "select_slider",
@@ -107,9 +107,21 @@ models = {
 }
 
 
-@st.cache(allow_output_mutation=True)
-def fit_estimator(estimator, X_train, y_train) -> sklearn.base.BaseEstimator:
-    estimator.fit(X_train, y_train)
-    return estimator
+st.cache(allow_output_mutation=True)
+def init_model(estimator, params: dict):
+    return estimator(**params)
 
+
+@st.cache()
+def fit_estimator_with_cv(estimator, X_train: np.ndarray, y_train: np.ndarray, scoring_classification_methods: list):
+    cv_scores = cross_validate(estimator, X_train, y_train,
+                scoring=scoring_classification_methods,
+                return_train_score=True, n_jobs=5)
+    
+    return cv_scores
+
+
+@st.cache(allow_output_mutation=True)
+def fit_estimator(estimator, X_train: np.ndarray, y_train: np.ndarray):
+    return estimator.fit(X_train, y_train)
 
