@@ -1,12 +1,10 @@
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import streamlit as st
-from plot import create_dataset_figure, create_decision_plot
-from sklearn.inspection import DecisionBoundaryDisplay
-from sklearn.linear_model import LogisticRegression
 
 from data import DATASETS, get_train_test_data
-from models import models, fit_estimator
+from models import fit_estimator, models
+from plot import create_dataset_figure, create_decision_plot
 
 mpl.style.use("default")
 
@@ -30,8 +28,6 @@ with st.sidebar:
     data_fig = create_dataset_figure(X_train, X_test, y_train, y_test)
     
     st.pyplot(data_fig, clear_figure=True)
-
-
 
 
 st.subheader("Classifier")
@@ -62,13 +58,17 @@ for model_name, model_dict in models.items():
                     pass
                 widget_key += 1
             
+            
             fitted_estimator = fit_estimator(models[model_name]["estimator"](**paramter_values), X_train, y_train)
             models[model_name]["fitted_estimator"] = fitted_estimator
             score = fitted_estimator.score(X_test, y_test)
             st.write(f"score is: {score}")
 
         with right:
-            fig = create_decision_plot(fitted_estimator, X_train, X_test, y_train, y_test)
+            discretize = st.checkbox("Discretize prediction", key=f"discretize_{widget_key}")
+            fig = create_decision_plot(fitted_estimator, X_train, X_test, y_train, y_test, discretize)
             st.pyplot(fig)
+            
+            widget_key += 1
             
         st.markdown("---")
