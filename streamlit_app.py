@@ -2,8 +2,9 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import streamlit as st
 from plot import create_dataset_figure, create_decision_plot
-from sklearn.inspection import DecisionBoundaryDisplay
 from sklearn.model_selection import cross_validate
+from sklearn.preprocessing import StandardScaler
+
 
 import pandas as pd
 from data import DATASETS, get_train_test_data
@@ -27,6 +28,7 @@ with st.sidebar:
     fig, ax = plt.subplots(1, 1)
     
     X, y = data_func(data_noise)
+    X = StandardScaler().fit_transform(X)
     X_train, X_test, y_train, y_test = get_train_test_data(X, y, data_ratio)
     
     data_fig = create_dataset_figure(X_train, X_test, y_train, y_test)
