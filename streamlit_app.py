@@ -41,7 +41,7 @@ for model_name, model_dict in models.items():
     with st.container():
         st.write(model_name)
         paramter_values = {}
-        left, right = st.columns([50,50])
+        left, right = st.columns([60,40])
         with left:
             for parameter_name, properties in model_dict['parameters'].items():
                 if properties["type"] == "select_slider":
@@ -69,7 +69,7 @@ for model_name, model_dict in models.items():
             cv_scores = cross_validate(fitted_estimator, X_train, y_train, cv=3,
                 scoring=scoring_classification_methods,
                 return_train_score=True)
-            df_cv_results = pd.DataFrame.from_dict(cv_scores, orient='index')
+            df_cv_results = pd.DataFrame.from_dict(cv_scores)
             df_cv_results = df_cv_results.rename({0: "CV 1", 1: "CV 2", 2: "CV 3"}, axis='columns')
             st.dataframe(df_cv_results)
             models[model_name]["fitted_estimator"] = fitted_estimator
