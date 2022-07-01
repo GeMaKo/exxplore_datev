@@ -5,8 +5,8 @@ import streamlit as st
 from sklearn.preprocessing import StandardScaler
 
 from data import DATASETS, cv_scores2df, get_train_test_data
-from models import fit_estimator, init_model, models, fit_estimator_with_cv
-from plot import create_dataset_figure, create_decision_plot
+from models import fit_estimator, get_classification_report, init_model, models, fit_estimator_with_cv, get_predictions
+from plot import create_dataset_figure, create_decision_figure, create_precision_recall_figure, create_roc_figure
 
 mpl.style.use("default")
 
@@ -14,6 +14,7 @@ mpl.style.use("default")
 st.set_page_config(layout="wide")
 st.title("Exxplore - Machine Learning Visualized")
 
+# Sidebar with params to choose your dataset
 with st.sidebar:
     st.subheader("Choose your dataset")
     
@@ -34,8 +35,14 @@ with st.sidebar:
     st.pyplot(data_fig, clear_figure=True)
 
 
+# Main Page
 st.subheader("Classifier")
 
+# The main page is a sequence of containers
+# Each container holds one model and its predictions
+# Each container consists of two columns: left and right
+# The right column holds the params for the model and the result of cross-validation
+# The left column holds the predictions and plots the decision boundary
 widget_key = 0
 for model_name, model_dict in models.items():
     with st.container():
@@ -75,10 +82,16 @@ for model_name, model_dict in models.items():
             fitted_estimator = fit_estimator(estimator, X_train, y_train)
             models[model_name]["fitted_estimator"] = fitted_estimator
             
-
+            y_pred = get_predictions(fitted_estimator, X_train, y_train)
+            models[model_name]["y_pred"] = y_pred
+            report = get_classification_report(y_train, y_pred)
+            #df_report = pd.DataFrame.from_dict(report)
+            st.markdown(f"```\n{report}\n```")
+            
+            
         with right:
             discretize = st.checkbox("Discretize prediction", key=f"discretize_{widget_key}")
-            fig = create_decision_plot(fitted_estimator, X_train, X_test, y_train, y_test, discretize)
+            fig = create_decision_figure(fitted_estimator, X_train, X_test, y_train, y_test, discretize)
             st.pyplot(fig)
             
             test_score = fitted_estimator.score(X_test, y_test)
@@ -87,3 +100,27 @@ for model_name, model_dict in models.items():
             widget_key += 1
             
         st.markdown("---")
+
+# Finally, show precision-recall curve and roc curve for all models 
+with st.container():
+    st.subheader("Model selection")
+    left, right = st.columns(2)
+    
+    with left:
+        fig, ax = plt.subplots(1, 1)
+        
+        for model_name, model_dict in models.items():
+            y_pred = model_dict["y_pred"]
+            _ = create_precision_recall_figure(y_train, y_pred, name=model_name, ax=ax)
+            
+        st.pyplot(fig)
+        
+    with right:
+        fig, ax = plt.subplots(1, 1)
+        
+        for model_name, model_dict in models.items():
+            y_pred = model_dict["y_pred"]
+            _ = create_roc_figure(y_train, y_pred, name=model_name, ax=ax)
+            
+        st.pyplot(fig)
+        

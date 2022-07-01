@@ -3,7 +3,8 @@ import sklearn
 import streamlit as st
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import RidgeClassifier
-from sklearn.model_selection import cross_validate
+from sklearn.metrics import classification_report
+from sklearn.model_selection import cross_val_predict, cross_validate
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
@@ -116,12 +117,21 @@ def init_model(estimator, params: dict):
 def fit_estimator_with_cv(estimator, X_train: np.ndarray, y_train: np.ndarray, scoring_classification_methods: list):
     cv_scores = cross_validate(estimator, X_train, y_train,
                 scoring=scoring_classification_methods,
-                return_train_score=True, n_jobs=5)
+                return_train_score=True)
     
     return cv_scores
+
+
+@st.cache
+def get_classification_report(y_true, y_pred) -> str:
+    return classification_report(y_true, y_pred, output_dict=False)
 
 
 @st.cache(allow_output_mutation=True)
 def fit_estimator(estimator, X_train: np.ndarray, y_train: np.ndarray):
     return estimator.fit(X_train, y_train)
 
+
+@st.cache
+def get_predictions(estimator, X_train, y_train) -> np.ndarray:
+    return cross_val_predict(estimator, X_train, y_train, cv=3)
