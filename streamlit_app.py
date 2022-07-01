@@ -6,7 +6,7 @@ from sklearn.inspection import DecisionBoundaryDisplay
 from sklearn.linear_model import LogisticRegression
 
 from data import DATASETS, get_train_test_data
-from models import models
+from models import models, fit_estimator
 
 mpl.style.use("default")
 
@@ -61,14 +61,14 @@ for model_name, model_dict in models.items():
                 else:
                     pass
                 widget_key += 1
-            models[model_name]["fitted_estimator"] = models[model_name]["estimator"](**paramter_values).fit(X_train, y_train)
-            score = models[model_name]["fitted_estimator"].score(X_test, y_test)
+            
+            fitted_estimator = fit_estimator(models[model_name]["estimator"](**paramter_values), X_train, y_train)
+            models[model_name]["fitted_estimator"] = fitted_estimator
+            score = fitted_estimator.score(X_test, y_test)
             st.write(f"score is: {score}")
 
-
-
         with right:
-            fitted_model = model_dict["fitted_estimator"]
-            fig = create_decision_plot(fitted_model, X_train, X_test, y_train, y_test)
+            fig = create_decision_plot(fitted_estimator, X_train, X_test, y_train, y_test)
             st.pyplot(fig)
+            
         st.markdown("---")

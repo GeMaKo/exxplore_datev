@@ -2,6 +2,7 @@ from sklearn.linear_model import RidgeClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 import numpy as np
+import streamlit as st
 
 
 # Ridge_Classifier
@@ -79,6 +80,8 @@ models = {
 }
 
 
-
+@st.cache(allow_output_mutation=True)
+def fit_estimator(estimator, X_train, y_train):
+    return estimator.fit(X_train, y_train)
 
 

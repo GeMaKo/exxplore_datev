@@ -43,8 +43,3 @@ DATASETS = {
     "Moon dataset": get_moon_data,
     "Circle dataset": get_circle_data,
 }
-    
-
-
-
-
