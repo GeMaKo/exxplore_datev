@@ -20,13 +20,14 @@ with st.sidebar:
     
     dataset_name = st.selectbox("Select dataset", options=DATASETS.keys())
     
-    data_noise = st.slider("Select noise", min_value=0.05, max_value=1.0, step=0.05, value=0.3)
+    data_noise = st.slider("Select noise ratio", min_value=0.05, max_value=1.0, step=0.05, value=0.3)
     data_ratio = st.slider("Select train/test ratio", min_value=0.1, max_value=0.9, step=0.05, value=0.8)
+    data_balance = st.slider("Select balance ratio", min_value=0.0, max_value=1.0, step=0.05, value=0.5)
     
     data_func = DATASETS[dataset_name]
     fig, ax = plt.subplots(1, 1)
     
-    X, y = data_func(data_noise)
+    X, y = data_func(data_noise, data_balance)
     X = StandardScaler().fit_transform(X)
     X_train, X_test, y_train, y_test = get_train_test_data(X, y, data_ratio)
     
@@ -48,7 +49,7 @@ for model_name, model_dict in models.items():
     with st.container():
         st.write(model_name)
         paramter_values = {}
-        left, right = st.columns([60,40])
+        left, right = st.columns([60, 40])
         with left:
             for parameter_name, properties in model_dict['parameters'].items():
                 if properties["type"] == "select_slider":
@@ -68,7 +69,7 @@ for model_name, model_dict in models.items():
                 else:
                     pass
                 widget_key += 1
-            
+
             scoring_classification_methods = ["f1", "accuracy"]
             estimator = init_model(models[model_name]["estimator"], paramter_values)
             cv_scores =  fit_estimator_with_cv(estimator, X_train, y_train, scoring_classification_methods)   

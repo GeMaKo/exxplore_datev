@@ -10,26 +10,30 @@ from sklearn.model_selection import train_test_split
 
 
 @st.cache
-def get_isolated_data(noise: float) -> tuple[np.ndarray, np.ndarray]:
-    X, y = make_blobs(n_samples=100, n_features=2, centers=np.array([[-2, 2], [2, -2]]), cluster_std=np.array([noise*5, noise*5]))
+def get_isolated_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]:
+    n_samples = [int(100 * balance), int(100 * (1 - balance))]
+    X, y = make_blobs(n_samples=n_samples, n_features=2, centers=np.array([[-2, 2], [2, -2]]), cluster_std=np.array([noise*5, noise*5]))
     return X, y
 
 @st.cache
-def get_xor_data(noise: float) -> tuple[np.ndarray, np.ndarray]:
-    X1, _ = make_blobs(n_samples=50, n_features=2, centers=np.array([[-2, 2], [2, -2]]), cluster_std=np.array([noise*5, noise*5]))
+def get_xor_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]:
+    n_samples = [int(100 * balance), int(100 * (1 - balance))]
+    X1, _ = make_blobs(n_samples=n_samples[0], n_features=2, centers=np.array([[-2, 2], [2, -2]]), cluster_std=np.array([noise*5, noise*5]))
     y1 = np.zeros(X1.shape[0])
-    X2, _ = make_blobs(n_samples=50, n_features=2, centers=np.array([[-2, -2], [2, 2]]), cluster_std=np.array([noise*5, noise*5]))
+    X2, _ = make_blobs(n_samples=n_samples[1], n_features=2, centers=np.array([[-2, -2], [2, 2]]), cluster_std=np.array([noise*5, noise*5]))
     y2 = np.ones(X2.shape[0])
     return np.r_[X1, X2], np.r_[y1, y2]
 
 @st.cache
-def get_moon_data(noise: float) -> tuple[np.ndarray, np.ndarray]:
-    X, y = make_moons(n_samples=100, noise=noise/1.5)
+def get_moon_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]:
+    n_samples = [int(100 * balance), int(100 * (1 - balance))]
+    X, y = make_moons(n_samples=n_samples, noise=noise/1.5)
     return X, y
 
 @st.cache
-def get_circle_data(noise: float) -> tuple[np.ndarray, np.ndarray]:
-    X, y = make_circles(n_samples=100, noise=noise/1.5, factor=0.1)
+def get_circle_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]:
+    n_samples = [int(100 * balance), int(100 * (1 - balance))]
+    X, y = make_circles(n_samples=n_samples, noise=noise/1.5, factor=0.1)
     return X, y
 
 @st.cache
