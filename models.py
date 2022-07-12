@@ -39,14 +39,14 @@ decision_tree_classification_definition = {
             "type": "select_slider",
             "values": np.arange(1, 14),
         },
-        "min_samples_split": {
-            "type": "select_slider",
-            "values": np.arange(2, 5),
-        },
-        "min_samples_leaf": {
-            "type": "select_slider",
-            "values": np.arange(1, 5),
-        }   
+        #"min_samples_split": {
+        #    "type": "select_slider",
+        #    "values": np.arange(2, 5),
+        #},
+        #"min_samples_leaf": {
+        #    "type": "select_slider",
+        #    "values": np.arange(1, 5),
+        #}   
     }
 }
 
@@ -101,9 +101,9 @@ svm_classification_definition = {
 
 models = {
     "Ridge Classifier": ridge_classification_defintion,
-    "SVM Classifier": svm_classification_definition,
+    #"SVM Classifier": svm_classification_definition,
     "Decision Tree Classifier": decision_tree_classification_definition,
-    "Random Forest Classifier": random_forest_classification_definition,
+    #"Random Forest Classifier": random_forest_classification_definition,
     
 }
 
