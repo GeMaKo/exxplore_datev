@@ -1,5 +1,5 @@
 import numpy as np
-import sklearn
+
 import streamlit as st
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import RidgeClassifier
@@ -101,9 +101,9 @@ svm_classification_definition = {
 
 models = {
     "Ridge Classifier": ridge_classification_defintion,
-    #"SVM Classifier": svm_classification_definition,
+    "SVM Classifier": svm_classification_definition,
     "Decision Tree Classifier": decision_tree_classification_definition,
-    #"Random Forest Classifier": random_forest_classification_definition,
+    "Random Forest Classifier": random_forest_classification_definition,
     
 }
 
