@@ -5,7 +5,7 @@ import sklearn
 from sklearn.base import BaseEstimator
 from sklearn.inspection import DecisionBoundaryDisplay
 import streamlit as st
-from sklearn.metrics import plot_precision_recall_curve, PrecisionRecallDisplay, RocCurveDisplay
+from sklearn.metrics import PrecisionRecallDisplay, RocCurveDisplay
 
 
 def create_dataset_figure(X_train: np.ndarray, X_test: np.ndarray, y_train: np.ndarray, y_test: np.ndarray, ax = None):
