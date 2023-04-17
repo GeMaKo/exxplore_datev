@@ -63,7 +63,7 @@ st.subheader("Classifier")
 # The left column holds the predictions and plots the decision boundary
 widget_key = 0
 for model_name, model_dict in models.items():
-    with st.expander("See explanation"):
+    with st.expander(f"{model_name}"):
         with st.container():
             st.write(model_name)
             paramter_values = {}
