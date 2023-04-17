@@ -1,5 +1,3 @@
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import streamlit as st
@@ -10,6 +8,9 @@ from sklearn.model_selection import train_test_split
 
 @st.cache
 def get_isolated_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Create a dataset of isolated clusters
+    """
     n_samples = [int(100 * balance), int(100 * (1 - balance))]
     X, y = make_blobs(
         n_samples=n_samples,
@@ -22,6 +23,9 @@ def get_isolated_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndar
 
 @st.cache
 def get_xor_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Create an XOR dataset
+    """
     n_samples = [int(100 * balance), int(100 * (1 - balance))]
     X1, _ = make_blobs(
         n_samples=n_samples[0],
@@ -42,6 +46,9 @@ def get_xor_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]:
 
 @st.cache
 def get_moon_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Create the moon dataset
+    """
     n_samples = [int(100 * balance), int(100 * (1 - balance))]
     X, y = make_moons(n_samples=n_samples, noise=noise / 1.5)
     return X, y
@@ -49,6 +56,9 @@ def get_moon_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]
 
 @st.cache
 def get_circle_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Create the circle dataset
+    """
     n_samples = [int(100 * balance), int(100 * (1 - balance))]
     X, y = make_circles(n_samples=n_samples, noise=noise / 1.5, factor=0.1)
     return X, y
@@ -58,6 +68,9 @@ def get_circle_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarra
 def get_train_test_data(
     X: np.ndarray, y: np.ndarray, data_ratio: float
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """
+    Perform train / test split
+    """
     X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=data_ratio)
     return X_train, X_test, y_train, y_test
 
