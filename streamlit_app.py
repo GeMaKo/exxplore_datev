@@ -128,24 +128,28 @@ for model_name, model_dict in models.items():
             st.markdown("---")
 
 # Finally, show precision-recall curve and roc curve for all models
+
 with st.container():
     st.subheader("Model selection")
-    left, right = st.columns(2)
+    with st.expander("Precision-recall curve and ROC-curve"):
+        left, right = st.columns(2)
 
-    with left:
-        fig, ax = plt.subplots(1, 1)
+        with left:
+            fig, ax = plt.subplots(1, 1)
 
-        for model_name, model_dict in models.items():
-            y_pred = model_dict["y_pred"]
-            _ = create_precision_recall_figure(y_train, y_pred, name=model_name, ax=ax)
+            for model_name, model_dict in models.items():
+                y_pred = model_dict["y_pred"]
+                _ = create_precision_recall_figure(
+                    y_train, y_pred, name=model_name, ax=ax
+                )
 
-        st.pyplot(fig)
+            st.pyplot(fig)
 
-    with right:
-        fig, ax = plt.subplots(1, 1)
+        with right:
+            fig, ax = plt.subplots(1, 1)
 
-        for model_name, model_dict in models.items():
-            y_pred = model_dict["y_pred"]
-            _ = create_roc_figure(y_train, y_pred, name=model_name, ax=ax)
+            for model_name, model_dict in models.items():
+                y_pred = model_dict["y_pred"]
+                _ = create_roc_figure(y_train, y_pred, name=model_name, ax=ax)
 
-        st.pyplot(fig)
+            st.pyplot(fig)
