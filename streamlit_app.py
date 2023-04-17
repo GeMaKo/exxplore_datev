@@ -109,7 +109,6 @@ for model_name, model_dict in models.items():
                 models[model_name]["y_pred"] = y_pred
                 report = get_classification_report(y_train, y_pred)
                 # df_report = pd.DataFrame.from_dict(report)
-                report = report[[""]]
                 st.markdown(f"```\n{report}\n```")
 
             with right:

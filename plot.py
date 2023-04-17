@@ -95,7 +95,6 @@ def create_dataset_figure(
         return ax
 
 
-@st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def create_decision_figure(
     estimator: BaseEstimator,
     X_train: np.ndarray,
