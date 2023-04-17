@@ -8,36 +8,56 @@ from sklearn.datasets import make_blobs, make_circles, make_moons
 from sklearn.model_selection import train_test_split
 
 
-
 @st.cache
 def get_isolated_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]:
     n_samples = [int(100 * balance), int(100 * (1 - balance))]
-    X, y = make_blobs(n_samples=n_samples, n_features=2, centers=np.array([[-2, 2], [2, -2]]), cluster_std=np.array([noise*5, noise*5]))
+    X, y = make_blobs(
+        n_samples=n_samples,
+        n_features=2,
+        centers=np.array([[-2, 2], [2, -2]]),
+        cluster_std=np.array([noise * 5, noise * 5]),
+    )
     return X, y
+
 
 @st.cache
 def get_xor_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]:
     n_samples = [int(100 * balance), int(100 * (1 - balance))]
-    X1, _ = make_blobs(n_samples=n_samples[0], n_features=2, centers=np.array([[-2, 2], [2, -2]]), cluster_std=np.array([noise*5, noise*5]))
+    X1, _ = make_blobs(
+        n_samples=n_samples[0],
+        n_features=2,
+        centers=np.array([[-2, 2], [2, -2]]),
+        cluster_std=np.array([noise * 5, noise * 5]),
+    )
     y1 = np.zeros(X1.shape[0])
-    X2, _ = make_blobs(n_samples=n_samples[1], n_features=2, centers=np.array([[-2, -2], [2, 2]]), cluster_std=np.array([noise*5, noise*5]))
+    X2, _ = make_blobs(
+        n_samples=n_samples[1],
+        n_features=2,
+        centers=np.array([[-2, -2], [2, 2]]),
+        cluster_std=np.array([noise * 5, noise * 5]),
+    )
     y2 = np.ones(X2.shape[0])
     return np.r_[X1, X2], np.r_[y1, y2]
+
 
 @st.cache
 def get_moon_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]:
     n_samples = [int(100 * balance), int(100 * (1 - balance))]
-    X, y = make_moons(n_samples=n_samples, noise=noise/1.5)
+    X, y = make_moons(n_samples=n_samples, noise=noise / 1.5)
     return X, y
+
 
 @st.cache
 def get_circle_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]:
     n_samples = [int(100 * balance), int(100 * (1 - balance))]
-    X, y = make_circles(n_samples=n_samples, noise=noise/1.5, factor=0.1)
+    X, y = make_circles(n_samples=n_samples, noise=noise / 1.5, factor=0.1)
     return X, y
 
+
 @st.cache
-def get_train_test_data(X: np.ndarray, y: np.ndarray, data_ratio: float) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+def get_train_test_data(
+    X: np.ndarray, y: np.ndarray, data_ratio: float
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=data_ratio)
     return X_train, X_test, y_train, y_test
 
@@ -63,5 +83,5 @@ def cv_scores2df(cv_scores: dict) -> Styler:
     df_cv_results = df_cv_results.drop(columns=["fit_time", "score_time"])
     df_cv_results.index = [f"Fold {i}" for i in range(len(cv_scores["fit_time"]))]
     styler = df_cv_results.style.pipe(get_scores_styler, df_cv_results.columns)
-    
+
     return styler
