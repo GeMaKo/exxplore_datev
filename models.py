@@ -133,9 +133,7 @@ def fit_estimator_with_cv(
 
 @st.cache
 def get_classification_report(y_true, y_pred) -> str:
-    return classification_report(
-        y_true, y_pred, lables=["yellow", "blue"], output_dict=False
-    )
+    return classification_report(y_true, y_pred, output_dict=False)
 
 
 @st.cache(allow_output_mutation=True)
