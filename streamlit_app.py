@@ -63,66 +63,70 @@ st.subheader("Classifier")
 # The left column holds the predictions and plots the decision boundary
 widget_key = 0
 for model_name, model_dict in models.items():
-    with st.container():
-        st.write(model_name)
-        paramter_values = {}
-        left, right = st.columns([60, 40])
-        with left:
-            for parameter_name, properties in model_dict["parameters"].items():
-                if properties["type"] == "select_slider":
-                    paramter_values[parameter_name] = st.select_slider(
-                        parameter_name, options=properties["values"], key=widget_key
-                    )
-                elif properties["type"] == "checkbox":
-                    paramter_values[parameter_name] = st.checkbox(
-                        parameter_name, key=widget_key
-                    )
-                elif properties["type"] == "selection":
-                    paramter_values[parameter_name] = st.selectbox(
-                        parameter_name, options=properties["values"], key=widget_key
-                    )
-                else:
-                    pass
+    with st.expander("See explanation"):
+        with st.container():
+            st.write(model_name)
+            paramter_values = {}
+            left, right = st.columns([60, 40])
+            with left:
+                for parameter_name, properties in model_dict["parameters"].items():
+                    if properties["type"] == "select_slider":
+                        paramter_values[parameter_name] = st.select_slider(
+                            parameter_name, options=properties["values"], key=widget_key
+                        )
+                    elif properties["type"] == "checkbox":
+                        paramter_values[parameter_name] = st.checkbox(
+                            parameter_name, key=widget_key
+                        )
+                    elif properties["type"] == "selection":
+                        paramter_values[parameter_name] = st.selectbox(
+                            parameter_name, options=properties["values"], key=widget_key
+                        )
+                    else:
+                        pass
+                    widget_key += 1
+
+                scoring_classification_methods = ["f1", "accuracy"]
+                estimator = init_model(models[model_name]["estimator"], paramter_values)
+                cv_scores = fit_estimator_with_cv(
+                    estimator, X_train, y_train, scoring_classification_methods
+                )
+                df_cv_results = cv_scores2df(cv_scores)
+
+                st.caption("Performance measures based on CV on training data:")
+                st.dataframe(df_cv_results)
+                st.caption(
+                    f"Average fit time: {cv_scores['fit_time'].mean(): .5f} seconds"
+                )
+                st.caption(
+                    f"Average score time: {cv_scores['score_time'].mean(): .5f} seconds"
+                )
+
+                fitted_estimator = fit_estimator(estimator, X_train, y_train)
+                models[model_name]["fitted_estimator"] = fitted_estimator
+
+                y_pred = get_predictions(fitted_estimator, X_train, y_train)
+                models[model_name]["y_pred"] = y_pred
+                report = get_classification_report(y_train, y_pred)
+                # df_report = pd.DataFrame.from_dict(report)
+                report = report[[""]]
+                st.markdown(f"```\n{report}\n```")
+
+            with right:
+                discretize = st.checkbox(
+                    "Discretize prediction", key=f"discretize_{widget_key}"
+                )
+                fig = create_decision_figure(
+                    fitted_estimator, X_train, X_test, y_train, y_test, discretize
+                )
+                st.pyplot(fig)
+
+                test_score = fitted_estimator.score(X_test, y_test)
+                st.write(f"Test score is: {test_score}")
+
                 widget_key += 1
 
-            scoring_classification_methods = ["f1", "accuracy"]
-            estimator = init_model(models[model_name]["estimator"], paramter_values)
-            cv_scores = fit_estimator_with_cv(
-                estimator, X_train, y_train, scoring_classification_methods
-            )
-            df_cv_results = cv_scores2df(cv_scores)
-
-            st.caption("Performance measures based on CV on training data:")
-            st.dataframe(df_cv_results)
-            st.caption(f"Average fit time: {cv_scores['fit_time'].mean(): .5f} seconds")
-            st.caption(
-                f"Average score time: {cv_scores['score_time'].mean(): .5f} seconds"
-            )
-
-            fitted_estimator = fit_estimator(estimator, X_train, y_train)
-            models[model_name]["fitted_estimator"] = fitted_estimator
-
-            y_pred = get_predictions(fitted_estimator, X_train, y_train)
-            models[model_name]["y_pred"] = y_pred
-            report = get_classification_report(y_train, y_pred)
-            # df_report = pd.DataFrame.from_dict(report)
-            st.markdown(f"```\n{report}\n```")
-
-        with right:
-            discretize = st.checkbox(
-                "Discretize prediction", key=f"discretize_{widget_key}"
-            )
-            fig = create_decision_figure(
-                fitted_estimator, X_train, X_test, y_train, y_test, discretize
-            )
-            st.pyplot(fig)
-
-            test_score = fitted_estimator.score(X_test, y_test)
-            st.write(f"Test score is: {test_score}")
-
-            widget_key += 1
-
-        st.markdown("---")
+            st.markdown("---")
 
 # Finally, show precision-recall curve and roc curve for all models
 with st.container():
