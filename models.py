@@ -113,7 +113,9 @@ def init_model(estimator, params: dict):
     return estimator(**params)
 
 
-@st.cache()
+cache_resource
+
+
 def fit_estimator_with_cv(
     estimator,
     X_train: np.ndarray,
@@ -131,16 +133,16 @@ def fit_estimator_with_cv(
     return cv_scores
 
 
-@st.cache
+@st.cache_data
 def get_classification_report(y_true, y_pred) -> str:
     return classification_report(y_true, y_pred, output_dict=False)
 
 
-@st.cache(allow_output_mutation=True)
+@st.cache_resource
 def fit_estimator(estimator, X_train: np.ndarray, y_train: np.ndarray):
     return estimator.fit(X_train, y_train)
 
 
-@st.cache
+@st.cache_data
 def get_predictions(estimator, X_train, y_train) -> np.ndarray:
     return cross_val_predict(estimator, X_train, y_train, cv=3)

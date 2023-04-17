@@ -6,7 +6,7 @@ from sklearn.datasets import make_blobs, make_circles, make_moons
 from sklearn.model_selection import train_test_split
 
 
-@st.cache
+@st.cache_data
 def get_isolated_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]:
     """
     Create a dataset of isolated clusters
@@ -21,7 +21,7 @@ def get_isolated_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndar
     return X, y
 
 
-@st.cache
+@st.cache_data
 def get_xor_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]:
     """
     Create an XOR dataset
@@ -44,7 +44,7 @@ def get_xor_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]:
     return np.r_[X1, X2], np.r_[y1, y2]
 
 
-@st.cache
+@st.cache_data
 def get_moon_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]:
     """
     Create the moon dataset
@@ -54,7 +54,7 @@ def get_moon_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]
     return X, y
 
 
-@st.cache
+@st.cache_data
 def get_circle_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarray]:
     """
     Create the circle dataset
@@ -64,7 +64,7 @@ def get_circle_data(noise: float, balance: float) -> tuple[np.ndarray, np.ndarra
     return X, y
 
 
-@st.cache
+@st.cache_data
 def get_train_test_data(
     X: np.ndarray, y: np.ndarray, data_ratio: float
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
